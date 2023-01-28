@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Equipo;
+use App\Models\Jugador;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EquipoController extends Controller
 {
@@ -41,6 +43,15 @@ class EquipoController extends Controller
          Equipo::find($id)->delete();
         return response()->json([
             "smg"=>"Se elimino Correctamente"
+        ]);
+    }
+    public function allEquipos(){
+        $equipos = DB::table('equipos')
+        ->join('jugadors', 'equipos.id', '=', 'jugadors.equipo_id')
+         ->select('jugadors.id as id','jugadors.nJugador as nombre_jugador','jugadors.posicion as posicion_jugador', 'jugadors.numCamisa as numero_camisa', 'equipos.nEquipo as nombre_equipo','equipos.nDT as director_tecnico')
+        ->get();
+        return response()->json([
+            'equipos'=>$equipos,
         ]);
     }
 }

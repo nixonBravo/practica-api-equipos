@@ -52,13 +52,9 @@ class JugadorController extends Controller
      */
     public function show( $id)
     {
-        $jugador = DB::table('jugadors')
-        ->where('jugadors.id', $id)
-        ->join('equipos', 'equipos.id', '=', 'jugadors.equipo_id')
-         ->select('jugadors.id as id','jugadors.nJugador as nombre_jugador','jugadors.posicion as posicion_jugador', 'jugadors.numCamisa as numero_camisa', 'equipos.nEquipo as nombre_equipo')
-        ->get();
+        $jugador=Jugador::find($id);
         return response()->json([
-            'jugador'=>$jugador,
+            'jugador'=>[$jugador,$jugador->equipo],
         ]);
     }
 
